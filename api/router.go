@@ -59,8 +59,7 @@ func userHandlers(rt *Router) http.Handler {
 	h.Group(func(r chi.Router) {
 		r.Post("/create", rt.CreateNewUrl)
 		r.Get("/get/{urlName}", rt.GetUrl)
-		//r.Get("/{username}", rt.GetProfile)
-		//r.With(gatekeeper).Get("/me", rt.GetMe)
+		r.Get("/delete/{urlName}", rt.deleteUrl)
 	})
 
 	return h

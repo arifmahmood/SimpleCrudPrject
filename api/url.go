@@ -88,3 +88,26 @@ func (rt *Router) GetUrl(writer http.ResponseWriter, request *http.Request) {
 
 }
 
+
+
+func (rt *Router) deleteUrl(writer http.ResponseWriter, request *http.Request) {
+	urlName := strings.TrimSpace(chi.URLParam(request, "urlName"))
+
+	count, err := rt.urlRepo.Delete(urlName)
+	if err != nil {
+		panic(newAPIError("DB failed", errInternalServer, err))
+	}
+	if count == 0 {
+		handleAPIError(writer, newAPIError("Url not found", errUserNotFound, nil))
+	}
+
+
+	resp := response{
+		code: http.StatusOK,
+		Data: count,
+	}
+
+	resp.serveJSON(writer)
+
+}
+

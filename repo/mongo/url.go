@@ -93,6 +93,23 @@ func (u *Url) Fetch(urlName string) (*model.Url, error) {
 	log.Println("Completed Fetch")
 	return url.toModel(), nil
 }
+func (u *Url) Delete(urlName string) (int64, error) {
+	log.Println("Starting Deleting", urlName)
+
+	result, err := u.collection().DeleteOne(context.Background(), bson.M{"url": urlName})
+	if err != nil {
+		log.Println("Deleting error", err)
+		if err == mongo.ErrNoDocuments {
+			return 0, nil
+		}
+		return 0, err
+	}
+
+	count := result.DeletedCount
+
+	log.Println("Completed Fetch")
+	return count, nil
+}
 
 
 
