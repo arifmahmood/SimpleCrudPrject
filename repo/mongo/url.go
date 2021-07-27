@@ -73,10 +73,10 @@ func (u *Url) Create(user *model.Url) error {
 	return nil
 }
 
-func (u *Url) Fetch(username string) (*model.Url, error) {
-	log.Println("Starting Fetch", username)
+func (u *Url) Fetch(urlName string) (*model.Url, error) {
+	log.Println("Starting Fetch", urlName)
 
-	result := u.collection().FindOne(context.Background(), bson.M{"username": username})
+	result := u.collection().FindOne(context.Background(), bson.M{"url": urlName})
 	if err := result.Err(); err != nil {
 		log.Println("Completed Fetch", err)
 		if err == mongo.ErrNoDocuments {

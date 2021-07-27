@@ -1,6 +1,7 @@
 package api
 
 import (
+	"github.com/go-chi/chi"
 	"net/http"
 	"simple-crud-project/errors"
 	"simple-crud-project/model"
@@ -63,5 +64,27 @@ func (rt *Router) CreateNewUrl(w http.ResponseWriter, r *http.Request) {
 	}
 
 	resp.serveJSON(w)
+}
+
+
+
+func (rt *Router) GetUrl(writer http.ResponseWriter, request *http.Request) {
+	urlName := strings.TrimSpace(chi.URLParam(request, "urlName"))
+
+	url, err := rt.urlRepo.Fetch(urlName)
+	if err != nil {
+		panic(newAPIError("DB failed", errInternalServer, err))
+	}
+	if url == nil {
+		handleAPIError(writer, newAPIError("Url not found", errUserNotFound, nil))
+	}
+
+	resp := response{
+		code: http.StatusOK,
+		Data: url,
+	}
+
+	resp.serveJSON(writer)
+
 }
 

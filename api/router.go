@@ -15,6 +15,7 @@ type Router struct {
 	urlRepo   repo.Url
 }
 
+
 func NewRouter(url repo.Url) *Router {
 	router := &Router{
 		Mux:        chi.NewRouter(),
@@ -56,8 +57,8 @@ func register(router *Router) {
 func userHandlers(rt *Router) http.Handler {
 	h := chi.NewRouter()
 	h.Group(func(r chi.Router) {
-		r.Post("/", rt.CreateNewUrl)
-		//r.Post("/login", rt.Login)
+		r.Post("/create", rt.CreateNewUrl)
+		r.Get("/get/{urlName}", rt.GetUrl)
 		//r.Get("/{username}", rt.GetProfile)
 		//r.With(gatekeeper).Get("/me", rt.GetMe)
 	})
